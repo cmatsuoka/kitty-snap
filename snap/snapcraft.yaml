@@ -1,0 +1,66 @@
+name: kitty
+base: core22
+version: 0.26.5
+summary: The fast, feature-rich, cross-platform, GPU based terminal
+description: |
+  This is my-snap's description. You have a paragraph or two to tell the
+  most important story about your snap. Keep it under 100 words though,
+  we live in tweetspace and your description wants to look good in the snap
+  store.
+
+grade: devel
+confinement: classic
+
+apps:
+  kitty:
+    command: bin/kitty
+
+parts:
+  kitty:
+    plugin: nil
+    source: https://github.com/kovidgoyal/kitty.git
+    source-tag: v$SNAPCRAFT_PROJECT_VERSION
+    build-attributes:
+      - enable-patchelf
+    build-packages:
+      - libc6-dev
+      - gcc
+      - make
+      - python3
+      - python3-pip
+      - golang-go
+      - pkgconf
+      - libssl-dev
+      - librsync-dev
+      - libharfbuzz-dev
+      - liblcms2-dev
+      - libfontconfig-dev
+      - libgl-dev
+      - libxkbcommon-dev
+      - libxkbcommon-x11-dev
+      - libxrandr-dev
+      - libxinerama-dev
+      - libxcursor-dev
+      - libx11-xcb-dev
+      - libdbus-1-dev
+      - libxi-dev
+      - python3-dev
+      - wayland-protocols
+    stage-packages:
+      - libpython3.10
+      - libharfbuzz0b
+      - libpng16-16
+      - liblcms2-2
+      - librsync2
+      - libssl3
+      - libx11-6
+      - libx11-xcb1
+      - libxkbcommon0
+      - libxkbcommon-x11-0
+      - libxcb1
+    override-build: |
+      pip3 install sphinx sphinx-copybutton sphinx-inline-tabs sphinxext-opengraph furo
+      python3 setup.py linux-package --prefix=$CRAFT_PART_INSTALL
+    prime:
+      - -usr/share/doc
+      - -usr/share/doc-base
